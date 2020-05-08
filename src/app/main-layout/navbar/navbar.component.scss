@@ -1,0 +1,44 @@
+$navbar-height: 3rem !default;
+$navigation-background: rgba(0, 0, 0, .8) !default;
+
+.navbar-height {
+  min-height: $navbar-height;
+}
+
+app-navbar {
+  @extend .navbar;
+  @extend .navbar-expand-lg;
+  @extend .navbar-light;
+  @extend .navbar-height;
+  @extend .shadow-sm;
+  background: $navigation-background;
+  z-index: 19;
+  align-items: stretch;
+  justify-content: space-between;
+  flex-shrink: 0;
+
+  .navbar-nav,
+  nav.navbar {
+    flex-direction: row;
+  }
+
+  .dropdown-toggle::after {
+    display: none;
+  }
+
+  .navbar-toggler {
+    @extend .mx-3;
+    @extend .px-0;
+    @extend .navbar-height;
+    align-self: flex-start;
+  }
+
+  > ul {
+    @extend .navbar-nav;
+    @extend .mx-3;
+  }
+
+  .dropdown-menu {
+    position: absolute !important;
+  }
+}

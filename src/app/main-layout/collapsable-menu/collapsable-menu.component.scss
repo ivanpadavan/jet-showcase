@@ -1,0 +1,176 @@
+$icon-container-width: 52px !default;
+$menu-item-height: 40px !default;
+$menu-background: #363636 !default;
+$menu-color: #f8f8f8 !default;
+
+app-collapsable-menu {
+  * {
+    outline: none;
+  }
+}
+
+.collapsable-menu {
+  @extend .d-flex;
+  @extend .flex-column;
+  @extend .h-100;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, .1);
+  background-color: $menu-background;
+  color: $menu-color;
+
+  .menu-items-wrapper {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
+
+  .menu-item-container {
+    position: relative;
+    cursor: pointer;
+    display: flex;
+    flex-wrap: wrap;
+    min-height: $menu-item-height;
+    // Links as not links
+    a,
+    a i {
+      color: $menu-color;
+      text-decoration: none;
+      outline: none;
+    }
+
+    // Shadow layer
+    &::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    // Line that shows that selected
+    &::after {
+      content: '';
+      position: absolute;
+      transition: all .1s ease-in;
+      left: -1px;
+      top: 0;
+      height: 100%;
+      width: .3em;
+      background: $navigation-background;
+      transform: translateX(-100%);
+    }
+
+    &.selected::after {
+      transform: translateX(0);
+    }
+
+    // fa lives here
+    .icon-container {
+      @extend .d-flex;
+      @extend .align-items-center;
+      @extend .justify-content-center;
+      position: absolute;
+      height: $menu-item-height;
+      width: $icon-container-width;
+    }
+
+    // title and submenu
+    .menu-item-wrapper {
+      .menu-item-title {
+        padding: 0 .25rem;
+        height: $menu-item-height;
+        align-items: center;
+        white-space: nowrap;
+        display: none;
+      }
+
+      // recursive overrides
+      .menu-item-submenu {
+        overflow: hidden;
+
+        .menu-item-wrapper {
+          transform: translateX(0);
+          box-shadow: none;
+          position: relative;
+        }
+      }
+    }
+  }
+
+  // header not works as link
+  .menu-item-container.header {
+    > .icon-container,
+    > .menu-item-wrapper > .menu-item-title {
+      pointer-events: none;
+    }
+  }
+
+  // selected and hovered items highlight with background
+  .selected.menu-item-container::before {
+    background: rgba(255, 255, 255, .2);
+  }
+
+  .menu-item-container:hover::before {
+    background: rgba(255, 255, 255, .2);
+  }
+
+  &.collapsed .menu-item-container {
+    .menu-item-wrapper {
+      background-color: $menu-background;
+      position: absolute;
+      transform: translateX(100%);
+      right: 0;
+      top: 0;
+      box-shadow: 2px 1px 3px rgba(0, 0, 0, .1);
+
+      &.slide-up {
+        top: unset;
+        bottom: 0;
+      }
+
+      .menu-item-title {
+        padding: 0 1rem;
+      }
+    }
+
+    &:hover {
+      .menu-item-title {
+        display: flex;
+      }
+    }
+  }
+
+  &.expanded {
+    .menu-item-container .menu-item-wrapper {
+      .menu-item-title {
+        display: flex;
+        visibility: hidden;
+      }
+    }
+
+    &:not(.transition) {
+      .menu-items-wrapper {
+        overflow: auto;
+      }
+
+      .menu-item-container .menu-item-wrapper {
+        width: 100%;
+
+        .menu-item-title {
+          visibility: visible;
+          margin-left: $icon-container-width;
+        }
+
+        .menu-item-submenu {
+          background-color: $menu-background;
+        }
+      }
+    }
+  }
+
+  .open-menu {
+    @extend .mt-auto;
+    @extend .menu-item-container;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,7 @@
+$navigation-background: #fff;
+$navbar-height: 3.3rem;
+$menu-color: #f8f8f8;
+
+@import 'main-layout.component';
+@import 'collapsable-menu/collapsable-menu.component';
+@import 'navbar/navbar.component';

@@ -1,0 +1,30 @@
+app-main-layout {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  app-collapsable-menu {
+    z-index: 1000;
+  }
+
+  .content {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 1;
+    width: 100%;
+    height: 1px;
+  }
+
+  .router-outlet-wrapper {
+    flex-grow: 1;
+    height: 100%;
+    position: relative;
+
+    > router-outlet + * {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+    }
+  }
+}
