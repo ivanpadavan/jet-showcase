@@ -1,3 +1,4 @@
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,6 +14,7 @@ import { AppComponent } from './app.component';
     BrowserModule,
     BrowserAnimationsModule,
     HammerModule,
+    HttpClientModule,
     RouterModule.forRoot([
       { path: '', loadChildren: () => import('./main-layout/main-layout.module').then(m => m.MainLayoutModule) },
     ])

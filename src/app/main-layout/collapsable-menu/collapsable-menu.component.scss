@@ -100,8 +100,15 @@ app-collapsable-menu {
   // header not works as link
   .menu-item-container.header {
     > .icon-container,
-    > .menu-item-wrapper > .menu-item-title {
-      pointer-events: none;
+    > .menu-item-wrapper {
+      > a {
+        @extend .h5;
+        @extend .my-0;
+      }
+
+      > .menu-item-title {
+        pointer-events: none;
+      }
     }
   }
 

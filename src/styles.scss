@@ -1,5 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
-$font-family-sans-serif: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+
+$web-font-path: 'https://fonts.googleapis.com/css2?family=Jost&family=Lato:wght@400;700&display=swap' !default;
+@import url($web-font-path);
+$font-family-sans-serif: 'Jost', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+$headings-font-family: 'Lato', sans-serif;
+
 $body-bg: #f1f1f1;
 @import "~bootstrap/scss/bootstrap";
 

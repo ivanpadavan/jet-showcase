@@ -3,6 +3,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { createTween } from 'rxjs-create-tween';
 import { distinctUntilChanged, finalize, map, pairwise, startWith, switchMap } from 'rxjs/operators';
 import { easeOutSine } from 'tween-functions';
+import { MenuItemsService } from '../../services/menu-items.service';
 import { MenuItem } from './menu-item.interface';
 
 @Component({
@@ -41,12 +42,12 @@ export class CollapsableMenuComponent {
   transition = false;
   tween$: Observable<string>;
 
-  menuItems$ = of([] as MenuItem[]);
+  menuItems$ = this.menuItemsService.menuItems$;
 
   constructor(
+    private menuItemsService: MenuItemsService,
     private cdRef: ChangeDetectorRef,
   ) {
-
     this.sidebarCollapsed$ = new BehaviorSubject<boolean>(this.collapsedInitially);
     this.tween$ = this.sidebarCollapsed$.pipe(
       distinctUntilChanged(),
