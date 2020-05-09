@@ -23,6 +23,7 @@
     "bind-observable": "^1.0.3",
     "bootstrap": "^4.4.1",
     "hammerjs": "^2.0.8",
+    "lodash-es": "^4.17.15",
     "rxjs": "~6.5.4",
     "rxjs-create-tween": "^2.0.3",
     "tslib": "^1.10.0",
