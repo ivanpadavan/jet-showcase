@@ -14,7 +14,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let row of cells; let i = index; trackBy: trackByIndex">
+    <tr *ngFor="let row of cells; let i = index; trackBy: trackByStringifiedValue">
         <td *ngFor="let cell of row; trackBy: trackByIndex"
             config-viewer
             [data]="cell"

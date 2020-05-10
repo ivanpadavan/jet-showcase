@@ -76,4 +76,13 @@ export class TableComponent implements OnChanges {
   trackByIndex(index: number) {
     return index;
   }
+  trackByValue(index: number, value) {
+    return value;
+  }
+  trackByStringifiedValue(index: number, value) {
+    return JSON.stringify(value);
+  }
+  trackByCellDataPayload(_, { column, index, row, component }: CellDataPayload) {
+    return JSON.stringify({ column, index, row, component });
+  }
 }
