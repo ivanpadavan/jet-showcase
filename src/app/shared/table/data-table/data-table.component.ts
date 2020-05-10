@@ -7,6 +7,9 @@ import { DataTableService } from './data-table.service';
   template: `
     <app-table [columns]="columns" [rows]="s.results$ | async">
     </app-table>
+    <div class="footer">
+      <app-paginator class="footer"></app-paginator>
+    </div>
   `,
   providers: [DataTableService],
 })

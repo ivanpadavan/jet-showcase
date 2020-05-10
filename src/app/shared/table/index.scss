@@ -10,5 +10,6 @@ app-data-table {
   white-space: nowrap;
 }
 
+@import './data-table/data-table.component';
 @import './data-table/paginator/paginator.component';
 @import './table/table.component';

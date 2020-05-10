@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BindObservable } from 'bind-observable';
 import { combineLatest, Observable } from 'rxjs';
-import { debounceTime, map, shareReplay, switchMap } from 'rxjs/operators';
+import { debounceTime, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 
 export interface ListResponse<T> {
   results: T[];
@@ -60,7 +60,7 @@ export class DataTableService<T> {
     );
 
     this.results$ = response$.pipe(map(it => it.results));
-    this.paginatorData$ = response$;
+    this.paginatorData$ = response$.pipe(tap(console.log));
   }
 
 

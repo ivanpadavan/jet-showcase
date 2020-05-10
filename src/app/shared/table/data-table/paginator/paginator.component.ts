@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { DataTableService } from '../data-table.service';
 
 @Component({
-  selector: 'app-table-paginator',
+  selector: 'app-paginator',
   template: `
     <ng-container *ngIf="s.paginatorData$ | async as d">
       <ul *ngIf="d.count" class="pagination">
