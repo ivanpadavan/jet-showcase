@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { ColumnConfig } from '../table-config.model';
 import { DataTableService } from './data-table.service';
+import { SorterComponent } from './sorter/sorter.component';
 
 @Component({
   selector: 'app-data-table',
@@ -25,7 +26,7 @@ export class DataTableComponent<T> implements OnChanges {
     if (changes.columns) {
       this.columns.forEach(c => {
         if (!c.headerComponent) {
-          // c.headerComponent = SorterComponent;
+          c.headerComponent = SorterComponent;
         }
       });
     }

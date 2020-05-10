@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { CellData } from '../../table-config.model';
 import { DataTableService } from '../data-table.service';
 
@@ -7,12 +7,12 @@ import { DataTableService } from '../data-table.service';
   template: `
     <div class="text-center text-nowrap" style="cursor: pointer;"
          (click)='sort()'>
-      <ng-content></ng-content>
+      {{ cellData.column.name }}
       <div style="margin-left: 4px; display: inline;">
-        <span *ngIf="sortBy != s.sortBy; else toggled" class="fa fa-sort"></span>
+        <i *ngIf="sortBy !== (s.sortBy$ | async); else toggled" class="fa fa-sort"></i>
         <ng-template #toggled>
-          <span *ngIf="s.sortOrder==='asc'" class='fa fa-sort-asc' aria-hidden='true'></span>
-          <span *ngIf="s.sortOrder==='desc'" class='fa fa-sort-desc' aria-hidden='true'></span>
+          <i *ngIf="s.sortOrder === 'asc'" class='fa fa-sort-up' aria-hidden='true'></i>
+          <i *ngIf="s.sortOrder === 'desc'" class='fa fa-sort-down' aria-hidden='true'></i>
         </ng-template>
       </div>
     </div>`,
@@ -29,11 +29,13 @@ import { DataTableService } from '../data-table.service';
 export class SorterComponent {
   sortBy = this.cellData.column.prop.split('.').slice(1).join('.');
 
-  constructor(public cellData: CellData, public s: DataTableService<any>) {
+  constructor(public cellData: CellData, public s: DataTableService<any>, private cdRef: ChangeDetectorRef) {
   }
 
   sort() {
     this.s.sortOrder = this.s.sortOrder === 'asc' ? 'desc' : 'asc';
+    console.log(this.s.sortOrder);
     this.s.sortBy = this.sortBy;
+    this.cdRef.detectChanges();
   }
 }
