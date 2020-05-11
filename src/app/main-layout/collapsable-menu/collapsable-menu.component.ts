@@ -1,33 +1,40 @@
 import { ChangeDetectorRef, Component, Output } from '@angular/core';
-import { BehaviorSubject, Observable, of } from 'rxjs';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { createTween } from 'rxjs-create-tween';
 import { distinctUntilChanged, finalize, map, pairwise, startWith, switchMap } from 'rxjs/operators';
 import { easeOutSine } from 'tween-functions';
 import { MenuItemsService } from '../../services/menu-items.service';
+import { MenuItemsModifierComponent } from '../menu-items-modifier.modal';
 import { MenuItem } from './menu-item.interface';
 
 @Component({
   selector: 'app-collapsable-menu',
   template: `
-  <div class="collapsable-menu {{ sidebarCollapsed ? 'collapsed' : 'expanded' }} {{ transition ? 'transition' : '' }}"
-     (swiperight)="openSidebar()"
-     (swipeleft)="closeSidebar()"
-     [style.width]="tween$ | async">
-    <ng-content></ng-content>
-    <div class="menu-items-wrapper">
+    <div class="collapsable-menu {{ sidebarCollapsed ? 'collapsed' : 'expanded' }} {{ transition ? 'transition' : '' }}"
+         (swiperight)="openSidebar()"
+         (swipeleft)="closeSidebar()"
+         [style.width]="tween$ | async">
+      <ng-content></ng-content>
+      <div class="menu-items-wrapper">
         <app-collapsable-menu-item
-                *ngFor="let menuItem of menuItems$ | async"
-                [menuItem]="menuItem"
+          *ngFor="let menuItem of menuItems$ | async"
+          [menuItem]="menuItem"
+        ></app-collapsable-menu-item>
+        <div class="flex-grow-1"></div>
+        <app-collapsable-menu-item
+          [closedAnyway]="true"
+          [menuItem]="settingsMenuItem"
         ></app-collapsable-menu-item>
         <div class="open-menu" (click)="toggleSidebar()">
-            <div class="icon-container">
-                <i class="fa fa-chevron-{{ sidebarCollapsed ? 'right' : 'left' }}"></i>
-                <i class="fa fa-chevron-{{ sidebarCollapsed ? 'right' : 'left' }}"></i>
-                <i class="fa fa-chevron-{{ sidebarCollapsed ? 'right' : 'left' }}"></i>
-            </div>
+          <div class="icon-container">
+            <i class="fa fa-chevron-{{ sidebarCollapsed ? 'right' : 'left' }}"></i>
+            <i class="fa fa-chevron-{{ sidebarCollapsed ? 'right' : 'left' }}"></i>
+            <i class="fa fa-chevron-{{ sidebarCollapsed ? 'right' : 'left' }}"></i>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
   `,
 })
@@ -43,9 +50,15 @@ export class CollapsableMenuComponent {
   tween$: Observable<string>;
 
   menuItems$ = this.menuItemsService.menuItems$;
+  settingsMenuItem: MenuItem = {
+    label: 'Settings',
+    icon: 'fa fa-cog',
+    onclick: () => this.bsModalService.show(MenuItemsModifierComponent),
+  };
 
   constructor(
     private menuItemsService: MenuItemsService,
+    private bsModalService: BsModalService,
     private cdRef: ChangeDetectorRef,
   ) {
     this.sidebarCollapsed$ = new BehaviorSubject<boolean>(this.collapsedInitially);

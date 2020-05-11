@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule, HammerModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouteReuseStrategy, RouterModule } from '@angular/router';
+import { ModalModule } from 'ngx-bootstrap/modal';
 
 import { AppComponent } from './app.component';
 import { VariableRouteReuseStrategy } from './shared/route-reuse-strategies/variable-route-reuse-strategy';
@@ -19,6 +20,7 @@ import { VariableRouteReuseStrategy } from './shared/route-reuse-strategies/vari
     RouterModule.forRoot([
       { path: '', loadChildren: () => import('./main-layout/main-layout.module').then(m => m.MainLayoutModule) },
     ]),
+    ModalModule.forRoot(),
   ],
   providers: [
     VariableRouteReuseStrategy,

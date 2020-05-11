@@ -8,6 +8,7 @@ import { MenuItem } from './menu-item.interface';
   template: `
       <div class="menu-item-container {{ menuItem.header ? 'header' : '' }}"
            [routerLinkActive]="menuItem.routerLink ? 'selected' : ''"
+           (click)="menuItem.onclick ? menuItem.onclick() : false"
            (mouseenter)="openSubmenu()"
            (mouseleave)="closeSubmenu()">
           <a class="icon-container" [routerLink]="menuItem.routerLink">
