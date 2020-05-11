@@ -8,52 +8,56 @@ import { defaultSortByProp } from '../shared/utils/defaultSortByProp';
 import { LocalStorage } from '../shared/utils/local-storage.decorator';
 import { StateService } from './state.service';
 
-export type MenuOrder = { [collection: string]: { name?: string, icon?: string, position?: number } };
+export type MenuSettings = { [collection: string]: MenuCollectionSettings };
+export type MenuCollectionSettings = { name?: string, icon?: string, position?: number };
 export type CollectionMenuItem = Compute<MenuItem & { collectionPK: string }>;
 
 @Injectable({ providedIn: 'root' })
 export class MenuItemsService {
   @BindObservable()
   @LocalStorage({ initialValue: undefined })
-  menuOrder: MenuOrder;
-  menuOrder$: Observable<MenuOrder>;
+  menuSettings: MenuSettings;
+  menuSettings$: Observable<MenuSettings>;
 
   menuItems$: Observable<CollectionMenuItem[]>;
 
   constructor(private stateService: StateService) {
-    this.stateService.collectionsStorage.order$
-    .pipe(
-      first(),
-      tap(order => {
-        if (this.menuOrder === undefined) {
-          this.menuOrder = {};
-        }
-        order.forEach(pk => {
-          if (this.menuOrder[pk] === undefined) {
-            this.menuOrder[pk] = {};
-          }
-        });
-        this.menuOrder = { ...this.menuOrder };
-      }),
-    ).subscribe();
+    this.populateMenuSettingsWithEmptyValues();
 
     this.menuItems$ = this.stateService.collectionsStorage.order$
     .pipe(
       switchMap(order => combineLatest([
         of(order),
         this.stateService.collectionsStorage.map$,
-        this.menuOrder$,
+        this.menuSettings$,
       ])),
       map(([order, collectionMap, settingsMap]) => {
         return order.map(k => ({
-          label: settingsMap[k]?.name ?? collectionMap[k].db_table,
-          icon: settingsMap[k]?.icon ?? 'fa fa-star',
+          label: settingsMap[k].name ?? collectionMap[k].db_table,
+          icon: settingsMap[k].icon ?? 'fa fa-star',
           routerLink: `/collections/${collectionMap[k].db_table}`,
           collectionPK: k,
-        })).sort(defaultSortByProp(it => this.menuOrder[it.collectionPK]?.position));
+        })).sort(defaultSortByProp(it => this.menuSettings[it.collectionPK].position));
       }),
-      tap(it => console.log(it)),
       shareReplay(1),
     );
+  }
+
+  private populateMenuSettingsWithEmptyValues() {
+    this.stateService.collectionsStorage.order$
+    .pipe(
+      first(),
+      tap(order => {
+        if (this.menuSettings === undefined) {
+          this.menuSettings = {};
+        }
+        order.forEach(pk => {
+          if (this.menuSettings[pk] === undefined) {
+            this.menuSettings[pk] = {};
+          }
+        });
+        this.menuSettings = { ...this.menuSettings };
+      }),
+    ).subscribe();
   }
 }

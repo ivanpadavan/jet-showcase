@@ -7,9 +7,10 @@ import { BindObservable } from 'bind-observable';
 import { interval, Observable } from 'rxjs';
 import { debounceTime, first, map } from 'rxjs/operators';
 import { iconClasses } from '../services/icon-classes';
-import { CollectionMenuItem, MenuItemsService } from '../services/menu-items.service';
+import { CollectionMenuItem, MenuCollectionSettings, MenuItemsService } from '../services/menu-items.service';
 import { OverlayDropdownDirective, OverlayDropdownDirectiveModule } from '../shared/dropdown/overlay-dropdown';
 import { DefaultModalModule } from '../shared/modal/default-modal.component';
+import { toTuples } from '../shared/utils/to-tuples';
 
 
 @Component({
@@ -25,7 +26,7 @@ import { DefaultModalModule } from '../shared/modal/default-modal.component';
             style="cursor: pointer">{{ menuItem.label }}</span>
       <ng-template #textFieldTpl>
         <input #textField
-               type="text" [(ngModel)]="menuItemsService.menuOrder[menuItem.collectionPK].name"
+               type="text" [(ngModel)]="corresspondingMenuOrder.name"
                class="form-control"
                (keydown.enter)="onBlur()"
                (keydown.escape)="onBlur()"
@@ -90,20 +91,15 @@ export class MenuItemCardComponent {
 
   iconClasses$ = this.iconsSearch$.pipe(
     debounceTime(100),
-    map(term => iconClasses
-      .filter(it => it.indexOf(term) !== -1)
-      .reduce((a, b) => {
-          if (a[a.length - 1].length > 2) {
-            a.push([b]);
-          } else {
-            a[a.length - 1].push(b);
-          }
-          return a;
-        },
-        [[] as string[]]
-      )
-    ),
+    map(term => {
+      const filteredClasses = iconClasses.filter(it => it.indexOf(term) !== -1);
+      return toTuples(filteredClasses, 3);
+    }),
   );
+
+  get corresspondingMenuOrder(): MenuCollectionSettings {
+    return this.menuItemsService.menuSettings[this.menuItem.collectionPK];
+  }
 
   constructor(public menuItemsService: MenuItemsService, private cdRef: ChangeDetectorRef) {
   }
@@ -119,19 +115,19 @@ export class MenuItemCardComponent {
       first(),
     ).subscribe(() => {
       this.editLabel = false;
-      this.menuItemsService.menuOrder = { ...this.menuItemsService.menuOrder };
+      this.menuItemsService.menuSettings = { ...this.menuItemsService.menuSettings };
     });
   }
 
   clearField() {
-    this.menuItemsService.menuOrder[this.menuItem.collectionPK].name = undefined;
-    this.menuItemsService.menuOrder = { ...this.menuItemsService.menuOrder };
+    this.corresspondingMenuOrder.name = undefined;
+    this.menuItemsService.menuSettings = { ...this.menuItemsService.menuSettings };
   }
 
   selectIcon(icon) {
     this.dropdown.close();
-    this.menuItemsService.menuOrder[this.menuItem.collectionPK].icon = icon;
-    this.menuItemsService.menuOrder = { ...this.menuItemsService.menuOrder };
+    this.corresspondingMenuOrder.icon = icon;
+    this.menuItemsService.menuSettings = { ...this.menuItemsService.menuSettings };
   }
 }
 
@@ -161,8 +157,8 @@ export class MenuItemsModifierComponent {
   drop(e: CdkDragDrop<CollectionMenuItem[]>) {
     const orderedPKs = this.menuItemCardComponents.map(it => it.menuItem.collectionPK);
     moveItemInArray(orderedPKs, e.previousIndex, e.currentIndex);
-    orderedPKs.forEach((pk, ix) => this.menuItemsService.menuOrder[pk].position = ix);
-    this.menuItemsService.menuOrder = { ...this.menuItemsService.menuOrder };
+    orderedPKs.forEach((pk, ix) => this.menuItemsService.menuSettings[pk].position = ix);
+    this.menuItemsService.menuSettings = { ...this.menuItemsService.menuSettings };
   }
 }
 
