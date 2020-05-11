@@ -12,6 +12,8 @@ $fa-font-path: '../node_modules/@fortawesome/fontawesome-free/webfonts';
 @import '~@fortawesome/fontawesome-free/scss/fontawesome';
 @import '~@fortawesome/fontawesome-free/scss/regular';
 @import '~@fortawesome/fontawesome-free/scss/solid';
+@import '~@fortawesome/fontawesome-free/scss/brands';
+@import '~@fortawesome/fontawesome-free/scss/fixed-width';
 
 body {
   -webkit-font-smoothing: antialiased;
@@ -33,3 +35,24 @@ p {
 
 @import 'src/app/main-layout/index';
 @import 'src/app/shared/table';
+
+$cdk-z-index-overlay-container: 1050;
+$cdk-z-index-overlay: 1050;
+$cdk-z-index-overlay-backdrop: 1050;
+@import '~@angular/cdk/overlay';
+@include cdk-overlay();
+
+.input-group.iconed {
+  align-items: center;
+
+  > i:first-of-type {
+    align-self: center;
+    position: absolute;
+    z-index: 7;
+    left: 1em;
+  }
+
+  > input:first-of-type {
+    padding-left: 2.5em;
+  }
+}
