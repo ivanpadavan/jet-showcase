@@ -8,6 +8,10 @@ const routes: Routes = [
     component: MainLayoutComponent,
     // canActivate: [RedirectToTheMainPageGuard], TODO prefix is set guard
     children: [
+      {
+        path: 'collections',
+        loadChildren: () => import('../collection/collection.module').then(m => m.CollectionModule)
+      },
     ],
   },
 ];
