@@ -1,0 +1,59 @@
+.scrollable {
+  transform: translateZ(0);
+  will-change: transform;
+}
+
+.sticky-header {
+  table {
+    thead tr:nth-child(1) > * {
+      background: $table-background;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      box-shadow: 3px 0 5px 0 rgba(0, 0, 0, .2);
+      border: 0;
+    }
+  }
+
+  td {
+    vertical-align: middle !important;
+  }
+}
+
+.sticky-column {
+  table {
+    tr > *:first-child {
+      position: sticky;
+      left: 0;
+      border-left: 0 !important;
+    }
+
+    thead tr > *:first-child {
+      z-index: 12 !important;
+      box-shadow: 0 0 0 1px $table-border-color !important;
+    }
+
+    :not(thead) tr > *:first-child {
+      z-index: 11 !important;
+      background: white;
+      box-shadow: 1px 1px 3px 0 rgba(0, 0, 0, .2), 0 1px 0 1px $table-border-color !important;
+    }
+  }
+}
+
+.sticky-footer {
+  table {
+    tfoot tr > * {
+      background: /*$table-background*/
+              #fff;
+      position: sticky;
+      bottom: 0;
+      box-shadow: 3px 0 5px 0 rgba(0, 0, 0, .2);
+    }
+  }
+}
+
+app-table {
+  @extend .sticky-header;
+  @extend .scrollable;
+}

@@ -1,0 +1,14 @@
+$table-background: #fff !default;
+
+app-table,
+app-data-table {
+  overflow: auto;
+  height: 100%;
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+@import './data-table/paginator/paginator.component';
+@import './table/table.component';

@@ -1,0 +1,27 @@
+<table class="table table-striped mb-0">
+    <thead>
+    <tr>
+        <ng-container *ngFor="let col of headerColumns">
+            <ng-container>
+                <th *ngIf="(col.component); else defaultColumn" [data]="col"
+                    config-viewer
+                ></th>
+            </ng-container>
+            <ng-template #defaultColumn>
+                <th><span class="nowrap">{{ col.column.name }}</span></th>
+            </ng-template>
+        </ng-container>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let row of cells; let i = index; trackBy: trackByIndex">
+        <td *ngFor="let cell of row; trackBy: trackByIndex"
+            config-viewer
+            [data]="cell"
+        ></td>
+    </tr>
+    </tbody>
+    <tfoot>
+        <ng-content select=".footer"></ng-content>
+    </tfoot>
+</table>
