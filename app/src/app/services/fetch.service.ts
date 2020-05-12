@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ModelDescription } from './jet.interfaces';
 
-export const P = 'http://localhost:8888/api';
+export const P = '/api';
 
 @Injectable({providedIn: 'root'})
 export class FetchService {

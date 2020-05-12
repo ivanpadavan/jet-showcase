@@ -66,7 +66,8 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "jet-showcase:build"
+            "browserTarget": "jet-showcase:build",
+            "proxyConfig": "proxy.conf.js"
           },
           "configurations": {
             "production": {

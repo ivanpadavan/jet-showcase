@@ -1,0 +1,26 @@
+version: '3'
+
+services:
+  db:
+    build:
+      context: services/db
+    ports:
+      - "5432:5432"
+  jet-bridge:
+    build:
+      context: services/jet
+    volumes:
+      - ./services/jet/jet.conf:/jet/jet.conf
+    ports:
+      - 8889:80
+    depends_on:
+      - db
+    restart: unless-stopped
+  app:
+    build:
+      context: app
+    ports:
+      - "80:80"
+    depends_on:
+      - jet-bridge
+
